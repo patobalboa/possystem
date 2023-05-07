@@ -28,7 +28,7 @@ class Categoria(models.Model):
     estado = models.BooleanField(verbose_name='Estado', default=True)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre_categoria
     
     class Meta:
         verbose_name = 'Categoría'
@@ -41,7 +41,7 @@ class Perfil(models.Model):
     descripcion = models.CharField(max_length=250, verbose_name='Descripción')
 
     def __str__(self):
-        return self.nombre_tipo
+        return self.nombre_perfil
 
     
 class Venta(models.Model):
