@@ -1,11 +1,40 @@
-<<<<<<< HEAD
-{% extends 'base.html' %}
+{% extends 'list.html' %}
 
-{% block 'content' %}
-=======
-{% extends 'core/base.html' %}
+{% block add %}
 
-{% block content %}
->>>>>>> dev
-<h1> lista de categorias </h1>
+        <a class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Nueva Categoria
+        </a>
+{% endblock %}
+{% block columns %}
+              <tr>
+                <th scope="col">Nombre Categoria</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Opciones</th>
+              </tr>
+{% endblock %}
+{% block rows %}
+              {% for category in object_list %}
+                <tr>
+                    <td>{{ category.nombre_categoria }}</td>
+                    <td>{{ category.descripcion }}</td>
+                    {% if category.estado == True %}
+                        <td>Activo</td>
+                    {% else %}
+                        <td>Inactivo</td>
+                    {% endif %}
+                    <td>
+                        <a class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm"> 
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                        <a class="btn btn-success btn-sm"> 
+                            <i class="fas fa-check"></i> Habilitar
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
 {% endblock %}
