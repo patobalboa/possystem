@@ -2,12 +2,10 @@
 {% load static %}
 
 {% block head %}
-    <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
-    <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
-    <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+
 {% endblock %}
 
 {% block content %}
@@ -38,9 +36,32 @@
 {% endblock %}
 
 {% block script %}
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(function(){
-        $('#example').DataTable();
-      })
+    // add datatable to table with id example in django template en spanish.
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados en su búsqueda",
+                "searchPlaceholder": "Buscar registros",
+                "info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_ registros",
+                "infoEmpty": "No existen registros",
+                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            }
+        });
+    });
+    
 </script>
+
 {% endblock %}
