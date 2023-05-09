@@ -19,4 +19,3 @@ class CategoriaListView(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Listado de Categorias'
         return context
-    
