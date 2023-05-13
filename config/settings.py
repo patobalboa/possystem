@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms', # para usar widgets de django
+    # libs externas
+    'widget_tweaks', # para usar widgets de django
+    # apps locales
     'core',
 ]
 
@@ -79,7 +83,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # 'django.db.backends.postgresql_psycopg2',
         'NAME': 'pos',
         'USER': 'postgres',
         'PASSWORD': '1q2w3e',
@@ -111,8 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_CODE = 'es-cl'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
