@@ -8,12 +8,16 @@ class Empleado(models.Model):
     rut = models.CharField(max_length=12, verbose_name='Rut', unique=True)
     birth_date = models.DateField(verbose_name='Fecha de nacimiento')
     fecha_contrato = models.DateField(verbose_name='Fecha de contrato')
+    fecha_fin_contrato = models.DateField(verbose_name='Fecha fin de contrato', null=True, blank=True)
+    usuario = models.CharField(max_length=150, verbose_name='Usuario', unique=True)
+    password = models.CharField(max_length=150, verbose_name='Contraseña')
     email = models.EmailField(verbose_name='Correo electrónico')
     phone = models.CharField(max_length=12, verbose_name='Teléfono')
     salario = models.IntegerField(verbose_name='Salario')
     estado = models.BooleanField(verbose_name='Estado', default=True)
     avatar = models.ImageField(upload_to='avatars', null=True, blank=True, verbose_name='Avatar')
-    perfil = models.ForeignKey('Perfil', on_delete=models.CASCADE, verbose_name='Perfil')
+    perfiles = models.ManyToManyField('Perfil', verbose_name='Perfiles')
+    
 
     def __str__(self):
         return self.nombres
@@ -62,6 +66,7 @@ class Venta(models.Model):
     total = models.IntegerField(verbose_name='Total')
     numero_venta = models.IntegerField(verbose_name='Número de venta', unique=True)
     empleado = models.ForeignKey('Empleado', on_delete=models.CASCADE, verbose_name='Empleado')
+    descuento = models.IntegerField(verbose_name='Descuento', default=0)
 
 
     def __str__(self):
@@ -88,6 +93,7 @@ class DetalleVenta(models.Model):
         ordering = ['cantidad']
 
 class Producto(models.Model):
+    codigo_producto = models.CharField(max_length=50, verbose_name='Código del producto', unique=True)
     nombre_producto = models.CharField(max_length=150, verbose_name='Nombre')
     descripcion = models.CharField(max_length=250, verbose_name='Descripción')
     stock = models.IntegerField(verbose_name='Stock')
@@ -122,3 +128,4 @@ class Proveedor(models.Model):
         verbose_name = 'Proveedor'
         verbose_name_plural = 'Proveedores'
         ordering = ['nombre_proveedor']
+
