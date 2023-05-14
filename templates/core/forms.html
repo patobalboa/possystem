@@ -36,26 +36,8 @@
         {% endif %}
 
 
-        $('form').on('submit', function(e) {
-            e.preventDefault();
-            var parameters = $(this).serializeArray();
-            $.ajax({
-                url: '{% url 'core:category_create' %}',
-                data: parameters,
-                type: 'POST',
-                dataType: 'json',
-            }).done(function(data) {
-                if(!data.hasOwnProperty('error')){
-                    Location.href = '{{% list_url %}}';
-                    return false;
-                }
-                message_error(data);
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                alert(textStatus + ': ' + errorThrown);
-            }).always(function() {
-                console.log("complete");
-            });
-        });
+        // Add ajax to form submit button
+        
 
     </script>
 {% endblock %}
