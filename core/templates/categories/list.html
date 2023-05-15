@@ -1,0 +1,39 @@
+{% extends 'core/list.html' %}
+{% block add %}
+
+        <a class="btn btn-primary mb-3" id="btnAdd" href="{{ create_url }}">
+            <i class="fas fa-plus"></i> Nueva {{ entity }}
+        </a>
+{% endblock %}
+{% block columns %}
+              <tr>
+                <th scope="col">Nombre Categoria</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Opciones</th>
+              </tr>
+{% endblock %}
+{% block rows %}
+              {% for category in object_list %}
+                <tr>
+                    <td>{{ category.nombre_categoria }}</td>
+                    <td>{{ category.descripcion }}</td>
+                    {% if category.estado == True %}
+                        <td>Activo</td>
+                    {% else %}
+                        <td>Inactivo</td>
+                    {% endif %}
+                    <td>
+                        <a class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm"> 
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                        <a class="btn btn-success btn-sm"> 
+                            <i class="fas fa-check"></i> Habilitar
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+{% endblock %}

@@ -17,7 +17,7 @@ def category_list(request):
 
 class CategoriaListView(ListView):
     model = Categoria
-    template_name = 'core/list.html'
+    template_name = 'categories/list.html'
     context_object_name = 'categories'
     #paginate_by = 10
 
@@ -57,30 +57,13 @@ class CategoriaCreateView(CreateView):
             action = request.POST['action']
             if action == 'add':
                 form = self.get_form()
-                if form.is_valid():
-                    form.save()
-                else:
-                    data['error'] = form.errors
+                data = form.save()
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
             data['error'] = str(e)
-        return JsonResponse(data)
-    
+        return JsonResponse(data) 
 
-
-    # def post(self, request, *args, **kwargs):
-    #     form = CategoriaForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return reverse_lazy('core:category_list')
-    #     self.object = None
-    #     context = self.get_context_data(**kwargs)
-    #     context['form'] = form
-    #     context['create_url'] = reverse_lazy('core:category_create')
-    #     context['entity'] = 'Categoria'
-    #     context['list_url'] = reverse_lazy('core:category_list')
-    #     return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -91,4 +74,32 @@ class CategoriaCreateView(CreateView):
         context['action'] = 'add'
         return context
     
-    
+# Create class for update a category with widgets from forms.py
+class CategoriaUpdateView(UpdateView):
+    model = Categoria
+    form_class = CategoriaForm
+    template_name = 'categories/create.html'
+    success_url = reverse_lazy('core:category_list')
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'edit':
+                form = self.get_form()
+                data = form.save()
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data) 
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Editar una categoria"
+        context['entity'] = 'Categoria'
+        context['create_url'] = reverse_lazy('core:category_create')
+        context['list_url'] = reverse_lazy('core:category_list')
+        context['action'] = 'edit'
+        return context   

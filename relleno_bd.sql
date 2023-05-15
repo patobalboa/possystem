@@ -131,9 +131,6 @@ VALUES
 (4, 16), -- Carozzi provee Carozzi Fideos
 (5, 17), -- Unilever provee Unilever Pasta de Dientes
 (6, 18); -- Kellogs provee Kellogs Corn Flakes
->>>>>>> b821b924ba1c62db04d1985b746770ffc1fabe88
-
-
 
 INSERT INTO public.core_empleado (nombres, rut, birth_date, fecha_contrato, fecha_fin_contrato, usuario, password, email, phone, salario, estado, avatar)
 VALUES 
