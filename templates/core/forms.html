@@ -28,7 +28,7 @@
             e.preventDefault();
             var params = $(this).serializeArray();
             $.ajax({
-                url: $(this).attr('action'),
+                url: window.location.pathname,
                 type: 'POST',
                 data: params,
                 dataType: 'json'                

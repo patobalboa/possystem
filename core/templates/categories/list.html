@@ -24,7 +24,7 @@
                         <td>Inactivo</td>
                     {% endif %}
                     <td>
-                        <a class="btn btn-warning btn-sm">
+                        <a href={% url 'core:category_update' category.id %} class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Editar
                         </a>
                         <a class="btn btn-danger btn-sm"> 

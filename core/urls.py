@@ -13,6 +13,7 @@ urlpatterns = [
     # Categorias URLs
     path('categoria', CategoriaListView.as_view(), name='category_list'),
     path('categoria/create/', CategoriaCreateView.as_view(), name='category_create'),
+    path('categoria/edit/<int:pk>/', CategoriaUpdateView.as_view(), name='category_update'),
 
     # Productos URLs
     path('producto/list/', ProductoListView.as_view(), name='product_list'),
