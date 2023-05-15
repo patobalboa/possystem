@@ -27,12 +27,12 @@
                         <a href={% url 'core:category_update' category.id %} class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Editar
                         </a>
-                        <a class="btn btn-danger btn-sm"> 
+                        <a href="#" id="btnDelete" data-url="{% url 'core:category_delete' category.id %}" class="btn btn-danger btn-sm"> 
                             <i class="fas fa-trash"></i> Eliminar
                         </a>
-                        <a class="btn btn-success btn-sm"> 
-                            <i class="fas fa-check"></i> Habilitar
-                        </a>
+                        <a href="#" data-url="{% url 'core:category_toggle_estado' category.id %}" class="btn btn-success btn-sm toggle-btn"> 
+                            <i class="fas fa-check"></i> Cambiar Estado
+                        </a> 
                     </td>
                 </tr>
                 {% endfor %}

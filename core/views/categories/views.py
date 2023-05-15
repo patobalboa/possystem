@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from core.models import Categoria
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -109,3 +109,33 @@ class CategoriaUpdateView(UpdateView):
         context['action'] = 'edit'
         return context   
 
+# Create class for delete a category with sweetalert2 in list.html.
+class CategoriaDeleteView(DeleteView):
+    model = Categoria
+    template_name = 'categories/delete.html'
+    success_url = reverse_lazy('core:category_list')
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            categoria = get_object_or_404(Categoria, pk=kwargs['pk'])
+            categoria.delete()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse({'success':'true'})
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Eliminar una categoria"
+        context['entity'] = 'Categoria'
+        context['create_url'] = reverse_lazy('core:category_create')
+        context['list_url'] = reverse_lazy('core:category_list')
+        return context
+
+class CategoriaToggleEstadoView(View):
+    def post(self, request, *args, **kwargs):
+        categoria = get_object_or_404(Categoria, pk=kwargs['pk'])
+        categoria.estado = not categoria.estado  # Cambia el estado
+        categoria.save()
+        return JsonResponse({'estado': categoria.estado})
