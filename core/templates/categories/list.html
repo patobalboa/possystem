@@ -19,9 +19,9 @@
                     <td>{{ category.nombre_categoria }}</td>
                     <td>{{ category.descripcion }}</td>
                     {% if category.estado == True %}
-                        <td>Activo</td>
+                        <td style="color: green;">Activo</td>
                     {% else %}
-                        <td>Inactivo</td>
+                        <td style="color: red">Inactivo</td>
                     {% endif %}
                     <td>
                         <a href={% url 'core:category_update' category.id %} class="btn btn-warning btn-sm">
