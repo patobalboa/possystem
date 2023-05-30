@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
 
+    {% block head_list %}
+    {% endblock %}
+
 {% endblock %}
 
 {% block content %}
@@ -17,7 +20,7 @@
         {% endblock %}
         <hr>
 
-        <table class="table" id="example">
+        <table class="table" id="data">
             <thead>
               {% block columns %}
               {% endblock %}
@@ -40,61 +43,98 @@
 <script type="text/javascript">
     // add datatable to table with id example in django template en spanish.
     $(document).ready(function() {
-        $('#example').DataTable({
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "zeroRecords": "No se encontraron resultados en su búsqueda",
-                "searchPlaceholder": "Buscar registros",
-                "info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_ registros",
-                "infoEmpty": "No existen registros",
-                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "search": "<i class='fas fa-search'></i>",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+        $('#data').DataTable( {
+            responsive: true,
+            autoWidth: false,
+            destroy: true,
+            deferRender: true,
+            ajax: {
+                url: window.location.pathname,
+                type: 'POST',
+                data: {
+                    'action': 'searchdata'
                 },
-            }
-        });
-        // Añadir al enlace $ ('# btnDelete') un evento click para eliminar el registro con SweetAlert2.
-        $('#btnDelete').on('click', function(e) {
-            e.preventDefault();
-            var deleteUrl = $(this).data('url');        
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, ¡bórralo!',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: deleteUrl,
-                        type: 'POST',
-                        data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                        dataType: 'json',                
-                        success: function (data) {
-                            if (data.success) {
-                                Swal.fire('Eliminado!', 'El registro a sido eliminado', 'success')
-                                .then((result) => {
-                                    // redirige a la lista de categorías después de que se ha eliminado la categoría
-                                    location.href = '{{ list_url }}';
-                                });
-                            } else {
-                                Swal.fire('Error!', 'Hubo un error al eliminar la categoría.', 'error');
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            Swal.fire('Error!', 'Hubo un error al eliminar la categoría.', 'error');
+                dataSrc: ""
+            },
+            columns: [
+                { "data": "id",visible: false},
+                { "data": "nombre_categoria" },
+                { "data": "descripcion" },
+                { "data": "estado", 
+                    "render": function ( data, type, row, meta ) {
+                      
+                        if(data == true){
+                          return '<span class="badge badge-success">Activo</span>';
+                        }else{
+                          return '<span class="badge badge-danger">Inactivo</span>';
                         }
-                    });
+                      
+                    }
+                },
+                { "data": "id",
+                },
+                
+
+            ],columnDefs: [
+                {
+                    targets: [-1],
+                    class: 'text-center',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        var buttons = '<a href="/categoria/edit/' + row.id +'/" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a> ';
+                        buttons += '<a data-url="/categoria/delete/' + row.id + '/" class="btn btn-danger btn-sm btnDelete" data-id="' + row.id + '"><i class="fas fa-trash-alt"></i></a> ';
+                        buttons += '<a href="#" class="btn btn-info btn-sm toggle-btn" data-url="/categoria/toggle_estado/' + row.id +'/" ><i class="fas fa-toggle-on"></i></a> ';
+                        return buttons;
+                    }
+                },
+            ],
+            "rowCallback": function(row, data) {
+                $(row).attr("data-id", data.id);
+              },
+            initComplete: function(settings, json) {
+                    
                 }
+        } );
+        $('#data').on('click', '.btnDelete', function(e) {
+            e.preventDefault();
+            var deleteUrl = $(this).data('url');
+            var categoryId = $(this).data('id');
+            Swal.fire({
+              title: '¿Estás seguro?',
+              text: "¡No podrás revertir esto!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Sí, ¡bórralo!',
+              cancelButtonText: 'Cancelar'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                $.ajax({
+                  url: deleteUrl,
+                  type: 'POST',
+                  data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                  dataType: 'json',
+                  success: function (data) {
+                    if (data.success) {
+                      Swal.fire('Eliminado!', 'El registro ha sido eliminado', 'success')
+                      .then((result) => {
+                        // redirige a la lista de categorías después de que se ha eliminado la categoría
+                        location.href = '{{ list_url }}';
+                      });
+                    } else {
+                      Swal.fire('Error!', 'Hubo un error al eliminar la categoría.', 'error');
+                    }
+                  },
+                  error: function (xhr, ajaxOptions, thrownError) {
+                    Swal.fire('Error!', 'Hubo un error al eliminar la categoría.', 'error');
+                  }
+                });
+              }
             });
-        });
+          });
+        // Añadir al enlace $ ('# btnDelete') un evento click para eliminar el registro con SweetAlert2.
+        
 
         $('.toggle-btn').on('click', function(e) {
             e.preventDefault();

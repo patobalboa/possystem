@@ -30,7 +30,13 @@ class CategoriaListView(ListView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            data = Categoria.objects.get(pk=request.POST['id']).toJSON()            
+            action = request.POST['action']
+            if action == 'searchdata':
+                data = []
+                for i in Categoria.objects.all():
+                    data.append(i.toJSON())
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)

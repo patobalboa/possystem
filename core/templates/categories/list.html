@@ -1,4 +1,13 @@
 {% extends 'core/list.html' %}
+{% load static %}
+
+{% block head_list %}
+
+    
+
+{% endblock %}
+
+
 {% block add %}
 
         <a class="btn btn-primary mb-3" id="btnAdd" href="{{ create_url }}">
@@ -7,6 +16,7 @@
 {% endblock %}
 {% block columns %}
               <tr>
+                <th scope="col" style="display: none;">Id</th>
                 <th scope="col">Nombre Categoria</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Estado</th>
@@ -14,7 +24,7 @@
               </tr>
 {% endblock %}
 {% block rows %}
-              {% for category in object_list %}
+            {% comment %} {% for category in object_list %}
                 <tr>
                     <td>{{ category.nombre_categoria }}</td>
                     <td>{{ category.descripcion }}</td>
@@ -35,5 +45,5 @@
                         </a> 
                     </td>
                 </tr>
-                {% endfor %}
+                {% endfor %} {% endcomment %}
 {% endblock %}

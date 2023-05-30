@@ -38,12 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions', 
+    'django_yuml',# para usar comandos de django
     'django.forms', # para usar widgets de django
     # libs externas
     'widget_tweaks', # para usar widgets de django
     # apps locales
     'core',
 ]
+
+GRAPH_MODELS = {
+    'app_labels': ['core'],
+    'group_models': True,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
